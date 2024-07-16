@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="main">
+            <div class="first">
+                <img src="notes.png" alt="logo">
+                <h1>Notes</h1>
+            </div>
+            <div class="second">    
+                <button class="but">
+                    <img src="edit.png">Create Notes
+                </button> 
+                <div class="container">
+                    <!-- <p contenteditable="true" class="input-box"><img src="delete.png"></p> -->
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const container = document.querySelector('.container');
+            const createBtn = document.querySelector('.but');
+
+            function showNotes() {
+                container.innerHTML = localStorage.getItem("note") || "";
+                attachEventListeners();
+            }
+            showNotes();
+
+            function updateStorage() {
+                localStorage.setItem("note", container.innerHTML);
+            }
+
+            function attachEventListeners() {
+                let notes = document.querySelectorAll(".input-box");
+                notes.forEach(note => {
+                    note.addEventListener('keyup', updateStorage);
+                });
+            }
+
+            createBtn.addEventListener('click', () => {
+                let inputBox = document.createElement("p");
+                let img = document.createElement("img");
+                inputBox.className = "input-box";
+                inputBox.setAttribute("contenteditable", "true");
+                img.src = "delete.png";
+                container.appendChild(inputBox).appendChild(img);
+                attachEventListeners();
+                updateStorage();
+            });
+
+            container.addEventListener('click', function(e) {
+                if (e.target.tagName === "IMG") {
+                    e.target.parentElement.remove();
+                    updateStorage();
+                }
+            });
+        </script>
+    </body>
+</html>
+
+
+
